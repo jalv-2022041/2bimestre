@@ -1,3 +1,11 @@
+//Fundación Kinal
+//Centro Educativo Técnico Labral Kinal 
+//Electrónica
+//Grado: Quinto
+//Sección: A
+//Curso: Taller de Electrónica Digital y Reparación de Computadoras I
+//Nombre: Josué David Alvizuris Pérez
+//Carné: 2022041 
 #define RG1 3
 #define GB1 4
 #define R 5
