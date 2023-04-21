@@ -7,10 +7,10 @@ Blumno: Josué David alvizuris perez
 Seccion: A
 Carne: 2022041
 */
-#define sensor 5
-#define bomba 4 
-#define vacio 3
 #define lleno 2
+#define vacio 3
+#define bomba 4
+#define sensor 5
 void setup() {
  pinMode(sensor, INPUT);
  pinMode(bomba, OUTPUT);
