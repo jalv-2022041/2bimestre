@@ -46,64 +46,40 @@ int medicion(){
 }
   void notas(){
     if(d == 5){
-    tone(song, 262);
-    //delay(10);         //Do
-    //noTone(song);
+    tone(song, 262); //Do
     }
     if(d == 10){
-    tone(song, 277);
-    //delay(10);        //Do Sostenido
-    //noTone(song);
+    tone(song, 277);//Do Sostenido
     }
     if(d == 15){
-    tone(song, 294);
-    //delay(10);         //Re
-    //noTone(song);
+    tone(song, 294);//Re
     }
     if(d == 20){
-    tone(song, 311);
-    //delay(10);         //Re Sostenido
-    //noTone(song);
+    tone(song, 311);//Re Sostenido
     }
     if(d == 25){
-    tone(song, 330);
-    //delay(10);         //Mi
-    //noTone(song);
+    tone(song, 330);//Mi
     }
     if(d == 30){
-    tone(song, 349);
-    //delay(10);         //Fa
-    //noTone(song);
+    tone(song, 349);//Fa
     }
     if(d == 35){
-    tone(song, 370);
-    //delay(10);         //Fa Sostenido
-    //noTone(song);
+    tone(song, 370);//Fa Sostenido
     }
     if(d == 40){
-    tone(song, 392);
-    //delay(10);         //Sol
-    //noTone(song);
+    tone(song, 392);//Sol
     }
     if(d == 45){
-    tone(song, 415);
-    //delay(10);         //Sol Sostenido
-    //noTone(song);
+    tone(song, 415);//Sol Sostenido
     }
     if(d == 50){
-    tone(song, 440);
-    //delay(10);         //La
-    //noTone(song);
+    tone(song, 440);//La
     }
     if(d == 55){
-    tone(song, 446);
-    //delay(10);         //La Sostenido
-    //noTone(song);
+    tone(song, 446);//La Sostenido
     }
     if(d == 60){
-    tone(song, 494);
-    //delay(10);         //Sol
-    //noTone(song);
+    tone(song, 494); //Sol
     }
     else{
       delay(400);
