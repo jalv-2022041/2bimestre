@@ -82,7 +82,7 @@ int medicion(){
     tone(song, 494); //Sol
     }
     else{
-      delay(400);
+      delay(300);
     noTone(song);
     }
     }
