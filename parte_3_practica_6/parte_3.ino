@@ -16,7 +16,6 @@
 #define song 15
 int d;
 float Si = 494.883;
-//Constructor
 LiquidCrystal_I2C LCD_ALV(direccion_lcd, columnas, filas);//constructor
 void setup()
 {
