@@ -58,8 +58,6 @@ int medicion(){
 void alerta(){
    if( distancia == 50){    
     ALV_LCD.setCursor(0,0);
-    ALV_LCD.print("                ");
-    ALV_LCD.setCursor(0,0);
     ALV_LCD.write(1);
     ALV_LCD.write(1);
     ALV_LCD.write(1);
@@ -73,8 +71,6 @@ void alerta(){
     ALV_LCD.print("     LIBRE      ");
   }
   if( distancia == 30){
-    ALV_LCD.setCursor(0,0);
-    ALV_LCD.print("                ");
     ALV_LCD.setCursor(0,0);
     ALV_LCD.write(1);
     ALV_LCD.write(1);
@@ -93,8 +89,6 @@ void alerta(){
     ALV_LCD.print("     CUIDADO    ");
   }
   if( distancia == 10){
-    ALV_LCD.setCursor(0,0);
-    ALV_LCD.print("                ");
     ALV_LCD.setCursor(0,0);
     ALV_LCD.write(1);
     ALV_LCD.write(1);
