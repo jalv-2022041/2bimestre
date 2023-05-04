@@ -1,65 +1,147 @@
-#include <OneWire.h>
-#include <LiquidCrystal_I2C.h>
+//Fundación Kinal
+//Centro Educativo Técnico Labral Kinal 
+//Electrónica
+//Grado: Quinto
+//Sección: A
+//Curso: Taller de Electrónica Digital y Reparación de Computadoras I
+//Nombre: Josué David Alvizuris Pérez
+//Carné: 2022041 
+//Libreria del Sensor de temperatura
+#include <OneWire.h>                
 #include <DallasTemperature.h>
-#define direccion_lcd 0x27
-#define filas 2
-#define columnas 16
-LiquidCrystal_I2C ALV_LCD(direccion_lcd, columnas, filas);
-OneWire ourWire(14);
-DallasTemperature sensors(&ourWire);
-byte customChar1[] = {
- B00100,
+//libreria del LCD
+#include <Wire.h>    
+#include <LiquidCrystal_I2C.h>
+#define Direccion_LCD 0x27
+#define FILAS 2
+#define COLUMNAS 16
+#define Pin_de_datos 2
+#define D1 6
+#define D2 4
+#define D3 3
+int Fahrenheit;
+int TEMPFahrenheit();
+int Celsius;
+int TEMPCelsius();
+void LCD_ALV();
+byte Termometro[] = {
   B00100,
-  B00100,
-  B00100,
+  B01010,
+  B01010,
+  B01010,
+  B10001,
+  B10001,
   B01110,
-  B01010,
-  B01010,
-  B01110
+  B00000
 };
-byte customChar2[] = {
-  B11000,
-  B11000,
-  B00000,
+byte Signo_de_grados[] = {
+  B11100,
+  B10100,
+  B11100,
   B00000,
   B00000,
   B00000,
   B00000,
   B00000
 };
-void setup()
-{
+OneWire ourWire(2);
+DallasTemperature SENSOR(&ourWire); 
+LiquidCrystal_I2C LCD_ALVA(Direccion_LCD, COLUMNAS, FILAS);
+void setup() {
+  delay(1000);
   Serial.begin(9600);
-  ALV_LCD.init();
-  ALV_LCD.backlight();
-  ALV_LCD.createChar(1, customChar1);
-  ALV_LCD.createChar(2, customChar2);
-sensors.begin();
+  SENSOR.begin();
+  pinMode(D1, OUTPUT);
+  pinMode(D2, OUTPUT);
+  pinMode(D3, OUTPUT);
+  LCD_ALVA.begin(16, 2);
+  LCD_ALVA.init();
+  LCD_ALVA.backlight();
+  LCD_ALVA.createChar(1, Termometro);
+  LCD_ALVA.write(1);
+  LCD_ALVA.createChar(2, Signo_de_grados);
+  LCD_ALVA.write(2);
 }
-void loop()
+void loop() 
 {
-  sensors.requestTemperatures();
-float temp= sensors.getTempCByIndex(0);
-float temp1 = sensors.getTempFByIndex(0);
-  ALV_LCD.setCursor(0,0);
-  ALV_LCD.print("   TERMOMETRO");
-  ALV_LCD.write(1);
-  ALV_LCD.setCursor(0,1);
-  ALV_LCD.print("G");
-  ALV_LCD.setCursor(1,1);
-  ALV_LCD.write(2);
-  ALV_LCD.setCursor(2,1);
-  ALV_LCD.print(" ");
-  ALV_LCD.setCursor(3,1);
-  ALV_LCD.print(temp);
-  ALV_LCD.setCursor(9,1);
-  ALV_LCD.print("F");  
-  ALV_LCD.setCursor(10,1);
-  ALV_LCD.write(2);
-  ALV_LCD.setCursor(11,1);
-  ALV_LCD.print(" ");
-  ALV_LCD.setCursor(12,1);
-  ALV_LCD.print(temp1);
+   LCD_ALV(); 
 }
-  
- 
+ int TEMPCelsius(){
+  SENSOR.requestTemperatures();
+  int TEMPC = SENSOR.getTempCByIndex(0); 
+  return TEMPC;
+}
+ int TEMPFahrenheit(){
+  SENSOR.requestTemperatures();
+  int TEMPF = SENSOR.getTempFByIndex(0); 
+  return TEMPF;
+}
+
+ void LCD_ALV(){
+ Fahrenheit = TEMPFahrenheit();
+ Celsius = TEMPCelsius();
+  if(Celsius > 30){
+    LCD_ALVA.setCursor(0,0);
+    LCD_ALVA.print("TERMOMETRO");
+    LCD_ALVA.setCursor(10,0);
+    LCD_ALVA.write(1);
+    LCD_ALVA.setCursor(0,1);
+    LCD_ALVA.print("C");
+    LCD_ALVA.setCursor(2,1);
+    LCD_ALVA.print(SENSOR.getTempCByIndex(0));
+    LCD_ALVA.setCursor(1,1);
+    LCD_ALVA.write(2);
+    LCD_ALVA.setCursor(9,1);
+    LCD_ALVA.print(SENSOR.getTempFByIndex(0));
+    LCD_ALVA.setCursor(8,1);
+    LCD_ALVA.write(2);
+    LCD_ALVA.setCursor(7,1);
+    LCD_ALVA.print("F");
+    digitalWrite(D1, HIGH);
+    digitalWrite(D2, LOW);
+    digitalWrite(D3, LOW);
+    }
+  if(Celsius > 15 && Celsius < 30){
+    LCD_ALVA.setCursor(0,0);
+    LCD_ALVA.print("TERMOMETRO");
+    LCD_ALVA.setCursor(10,0);
+    LCD_ALVA.write(1);
+    LCD_ALVA.setCursor(0,1);
+    LCD_ALVA.print("C");
+    LCD_ALVA.setCursor(2,1);
+    LCD_ALVA.print(SENSOR.getTempCByIndex(0));
+    LCD_ALVA.setCursor(1,1);
+    LCD_ALVA.write(2);
+    LCD_ALVA.setCursor(9,1);
+    LCD_ALVA.print(SENSOR.getTempFByIndex(0));
+    LCD_ALVA.setCursor(8,1);
+    LCD_ALVA.write(2);
+    LCD_ALVA.setCursor(7,1);
+    LCD_ALVA.print("F");
+    digitalWrite(D1, LOW);
+    digitalWrite(D2, HIGH);
+    digitalWrite(D3, LOW); 
+
+  }
+  if(Celsius < 15 ){
+    LCD_ALVA.setCursor(0,0);
+    LCD_ALVA.print("TERMOMETRO");
+    LCD_ALVA.setCursor(10,0);
+    LCD_ALVA.write(1);
+    LCD_ALVA.setCursor(0,1);
+    LCD_ALVA.print("C");
+    LCD_ALVA.setCursor(2,1);
+    LCD_ALVA.print(SENSOR.getTempCByIndex(0));
+    LCD_ALVA.setCursor(1,1);
+    LCD_ALVA.write(2);
+    LCD_ALVA.setCursor(9,1);
+    LCD_ALVA.print(SENSOR.getTempFByIndex(0));
+    LCD_ALVA.setCursor(8,1);
+    LCD_ALVA.write(2);
+    LCD_ALVA.setCursor(7,1);
+    LCD_ALVA.print("F");
+    digitalWrite(D1, LOW);
+    digitalWrite(D2, LOW);
+    digitalWrite(D3, HIGH); 
+  }
+  }
