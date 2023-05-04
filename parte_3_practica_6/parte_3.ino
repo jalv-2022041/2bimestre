@@ -82,7 +82,7 @@ void alerta(){
   }
   if( d < 30 && d > 15){
     LCD_ALV.setCursor(0,0);
-    LCD_ALV.print("   PRECAUCION   ");
+    LCD_ALV.print("    CUIDADO    ");
     LCD_ALV.setCursor(0,1);
     LCD_ALV.print("ESPACIO PRIVADO ");
       digitalWrite(2, LOW);
