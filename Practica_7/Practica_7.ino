@@ -94,7 +94,7 @@ byte luz_on[] = {
   B01110,
   B01110
 };
-byte CEN[] = {
+byte Centigrados[] = {
   B01000,
   B10100,
   B01000,
@@ -104,7 +104,7 @@ byte CEN[] = {
   B00100,
   B00011
 };
-byte P_detectada[] = {
+byte persona_detectada[] = {
   B01000,
   B11100,
   B00000,
@@ -114,7 +114,7 @@ byte P_detectada[] = {
   B00100,
   B11111
 };
-byte P_no_detectada[] = {
+byte persona_nodetec[] = {
   B10100,
   B01000,
   B10100,
@@ -128,14 +128,14 @@ float medicion();
 //Constructores
 OneWire ourWire(2);                //Se establece el pin 2  como el pin que utilizaremos para el protocolo OneWire
 DallasTemperature sensor(&ourWire); //Se declara una objeto para nuestro sensor
-LiquidCrystal_I2C LCD_ALV(0x27, 16, 2);
-Servo Servo_Estrada; 
+LiquidCrystal_I2C ALV_LCD(0x27, 16, 2);
+Servo Servo_ALV; 
 float temperatura;
 
 
 void setup() {
   
-  Servo_Estrada.attach(pin_Servo);
+  Servo_ALV.attach(pin_Servo);
   pinMode(RadarPin, INPUT);
   rueda.begin();
   pinMode(luminaria1, OUTPUT);
@@ -149,25 +149,25 @@ void setup() {
   pinMode(G, OUTPUT);
   pinMode(B, OUTPUT);
 sensor.begin(); 
-LCD_ALV.init(); 
-LCD_ALV.backlight(); 
- LCD_ALV.createChar(1, puerta_abierta);
- LCD_ALV.createChar(2, puerta_media);
- LCD_ALV.createChar(3, puerta_cerrada);
- LCD_ALV.createChar(4, luz_off);
- LCD_ALV.createChar(5, luz_on);
- LCD_ALV.createChar(6, Centigrados);
- LCD_ALV.createChar(7, P_detectada);
- LCD_ALV.createChar(8, P_no_detectada);
- LCD_ALV.setCursor(0,1);
-  LCD_ALV.print("Puerta:");
-  LCD_ALV.setCursor(9,1);
-    LCD_ALV.print("Luz 2");
-    LCD_ALV.write(5);
-    LCD_ALV.setCursor(9,0);
-    LCD_ALV.print("Luz 1");
-    LCD_ALV.write(4);
-    Servo_Estrada.write(0);
+ALV_LCD.init(); 
+ALV_LCD.backlight(); 
+ ALV_LCD.createChar(1, puerta_abierta);
+ ALV_LCD.createChar(2, puerta_media);
+ ALV_LCD.createChar(3, puerta_cerrada);
+ ALV_LCD.createChar(4, luz_off);
+ ALV_LCD.createChar(5, luz_on);
+ ALV_LCD.createChar(6, Centigrados);
+ ALV_LCD.createChar(7, persona_detectada);
+ ALV_LCD.createChar(8, persona_nodetec);
+ ALV_LCD.setCursor(0,1);
+  ALV_LCD.print("Puerta:");
+  ALV_LCD.setCursor(9,1);
+    ALV_LCD.print("Luz 2");
+    ALV_LCD.write(5);
+    ALV_LCD.setCursor(9,0);
+    ALV_LCD.print("Luz 1");
+    ALV_LCD.write(4);
+    Servo_ALV.write(0);
  }
  
 void loop() {
@@ -177,9 +177,9 @@ void loop() {
   temperatura = medicion();
   luminarias();
   puerta();
-LCD_ALV.setCursor(0,0);
-LCD_ALV.print(temperatura);
-LCD_ALV.write(6);
+ALV_LCD.setCursor(0,0);
+ALV_LCD.print(temperatura);
+ALV_LCD.write(6);
 luminarias();
 puerta();
 proximidad();
@@ -201,8 +201,8 @@ float medicion(){
   }
 void proximidad(){  
   if( value == LOW){
-    LCD_ALV.setCursor(7,0);
-    LCD_ALV.write(8);
+    ALV_LCD.setCursor(7,0);
+    ALV_LCD.write(8);
      for(int i = 0; i < 7; i++){
       rueda.setPixelColor(i,rueda.Color(0,255,0));
           rueda.show();
@@ -213,8 +213,8 @@ void proximidad(){
       }
     }   
   if(value == HIGH){
-    LCD_ALV.setCursor(7,0);
-    LCD_ALV.write(7);
+    ALV_LCD.setCursor(7,0);
+    ALV_LCD.write(7);
     digitalWrite(buzzer, HIGH);
     for(int i = 0; i < 7; i++){
       rueda.setPixelColor(i,rueda.Color(255,0,0));
@@ -233,9 +233,9 @@ void luminarias(){
 if(digitalRead(btn1) && estado1==0){  // si pulsador presionado y led apagado
     digitalWrite(luminaria1, LOW);          // se enciende el led 
     
-    LCD_ALV.setCursor(9,0);
-    LCD_ALV.print("Luz 1");
-    LCD_ALV.write(5);
+    ALV_LCD.setCursor(9,0);
+    ALV_LCD.print("Luz 1");
+    ALV_LCD.write(5);
     delay(300);
     estado1=1;                       // guardamos el estado encendido   
   } 
@@ -243,18 +243,18 @@ if(digitalRead(btn1) && estado1==0){  // si pulsador presionado y led apagado
 
     digitalWrite(luminaria1, HIGH);           // se apaga el led 
     
-    LCD_ALV.setCursor(9,0);
-    LCD_ALV.print("Luz 1");
-    LCD_ALV.write(4);
+    ALV_LCD.setCursor(9,0);
+    ALV_LCD.print("Luz 1");
+    ALV_LCD.write(4);
     delay(300); 
     estado1=0;                       // guardamos el estado apagado   
   }
   if(digitalRead(btn2) && estado2==0){  // si pulsador presionado y led apagado
     digitalWrite(luminaria2, LOW);          // se enciende el led 
     
-    LCD_ALV.setCursor(9,1);
-    LCD_ALV.print("Luz 2");
-    LCD_ALV.write(5); 
+    ALV_LCD.setCursor(9,1);
+    ALV_LCD.print("Luz 2");
+    ALV_LCD.write(5); 
     delay(300);
     estado2=1;                       // guardamos el estado encendido   
   } 
@@ -262,44 +262,44 @@ if(digitalRead(btn1) && estado1==0){  // si pulsador presionado y led apagado
 
     digitalWrite(luminaria2, HIGH);           // se apaga el led 
     
-    LCD_ALV.setCursor(9,1);
-    LCD_ALV.print("Luz 2");
-    LCD_ALV.write(4); 
+    ALV_LCD.setCursor(9,1);
+    ALV_LCD.print("Luz 2");
+    ALV_LCD.write(4); 
     delay(300);
     estado2=0;                       // guardamos el estado apagado   
   }
 }
 void puerta(){
   if(digitalRead(btn3)==HIGH){
-  Servo_Estrada.write(90);
-    LCD_ALV.setCursor(0,1);
-    LCD_ALV.print("Puerta:");
-    LCD_ALV.write(3);
+  Servo_ALV.write(90);
+    ALV_LCD.setCursor(0,1);
+    ALV_LCD.print("Puerta:");
+    ALV_LCD.write(3);
     delay(100);
-    LCD_ALV.setCursor(0,1);
-    LCD_ALV.print("Puerta:");
-    LCD_ALV.write(2);
+    ALV_LCD.setCursor(0,1);
+    ALV_LCD.print("Puerta:");
+    ALV_LCD.write(2);
     delay(100);
-    LCD_ALV.setCursor(0,1);
-    LCD_ALV.print("Puerta:");
-    LCD_ALV.write(1); 
+    ALV_LCD.setCursor(0,1);
+    ALV_LCD.print("Puerta:");
+    ALV_LCD.write(1); 
     delay(2000);
-    Servo_Estrada.write(0);
-    LCD_ALV.setCursor(0,1);
-    LCD_ALV.print("Puerta:");
-    LCD_ALV.write(1);
+    Servo_ALV.write(0);
+    ALV_LCD.setCursor(0,1);
+    ALV_LCD.print("Puerta:");
+    ALV_LCD.write(1);
     delay(100);
-    LCD_ALV.setCursor(0,1);
-    LCD_ALV.print("Puerta:");
-    LCD_ALV.write(2);
+    ALV_LCD.setCursor(0,1);
+    ALV_LCD.print("Puerta:");
+    ALV_LCD.write(2);
     delay(100);
-    LCD_ALV.setCursor(0,1);
-    LCD_ALV.print("Puerta:");
-    LCD_ALV.write(3);
+    ALV_LCD.setCursor(0,1);
+    ALV_LCD.print("Puerta:");
+    ALV_LCD.write(3);
     delay(1000); 
-    Servo_Estrada.write(0);
+    Servo_ALV.write(0);
   } else{
-    Servo_Estrada.write(0);
+    Servo_ALV.write(0);
     }
 }
 void condicion_temp(){
