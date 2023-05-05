@@ -231,7 +231,7 @@ void proximidad(){
 }
 void luminarias(){
 if(digitalRead(Boton_1) && estado1==0){  // si pulsador presionado y led apagado
-    digitalWrite(LUZ1, LOW);          // se enciende el led 
+    digitalWrite(LUZ1, HIGH);          // se enciende el led 
     
     ALV_LCD.setCursor(9,0);
     ALV_LCD.print("Luz 1");
@@ -241,7 +241,7 @@ if(digitalRead(Boton_1) && estado1==0){  // si pulsador presionado y led apagado
   } 
   if(digitalRead(Boton_1) && estado1==1){  // si pulsador presionado y led encendido
 
-    digitalWrite(LUZ1, HIGH);           // se apaga el led 
+    digitalWrite(LUZ1, LOW);           // se apaga el led 
     
     ALV_LCD.setCursor(9,0);
     ALV_LCD.print("Luz 1");
@@ -250,7 +250,7 @@ if(digitalRead(Boton_1) && estado1==0){  // si pulsador presionado y led apagado
     estado1=0;                       // guardamos el estado apagado   
   }
   if(digitalRead(Boton_2) && estado2==0){  // si pulsador presionado y led apagado
-    digitalWrite(LUZ2, LOW);          // se enciende el led 
+    digitalWrite(LUZ2, HIGH);          // se enciende el led 
     
     ALV_LCD.setCursor(9,1);
     ALV_LCD.print("Luz 2");
@@ -259,9 +259,7 @@ if(digitalRead(Boton_1) && estado1==0){  // si pulsador presionado y led apagado
     estado2=1;                       // guardamos el estado encendido   
   } 
   if(digitalRead(Boton_2) && estado2==1){  // si pulsador presionado y led encendido
-
-    digitalWrite(LUZ2, HIGH);           // se apaga el led 
-    
+    digitalWrite(LUZ2, LOW);           // se apaga el led  
     ALV_LCD.setCursor(9,1);
     ALV_LCD.print("Luz 2");
     ALV_LCD.write(4); 
@@ -270,7 +268,7 @@ if(digitalRead(Boton_1) && estado1==0){  // si pulsador presionado y led apagado
   }
 }
 void puerta(){
-  if(digitalRead(Boton_3)==HIGH){
+  if(digitalRead(Boton_3)==LOW){
   Servo_ALV.write(90);
     ALV_LCD.setCursor(0,1);
     ALV_LCD.print("Puerta:");
