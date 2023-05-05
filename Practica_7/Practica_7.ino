@@ -14,25 +14,25 @@
 #include <Adafruit_NeoPixel.h>
 #include <Servo.h>
 //Directivas
-#define btn1 8
-#define btn2 9
-#define btn3 7
-#define luminaria1 14
-#define luminaria2 15
+#define Boton_1 12
+#define Boton_2 11
+#define Boton_3 10
+#define LUZ1 14
+#define LUZ2 15
 #define Cantidad_Leds 7
-#define pin_Led 6
-#define RadarPin 16
-#define pin_Servo 5
-#define buzzer 13
-#define R 10
-#define G 11
-#define B 12
+#define NEOP 4
+#define RADAR 13
+#define SERVO 5
+#define buzzer 6
+#define R 9
+#define G 8
+#define B 7
 int personacerca =0;
 int value;
 int estado1 = 0;
 int estado2 = 0;
 // Constructor
-Adafruit_NeoPixel rueda(Cantidad_Leds,pin_Led, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel rueda(Cantidad_Leds,NEOP, NEO_GRB + NEO_KHZ800);
 //Caracteres
 byte puerta_cerrada[] = {
   B11111,
@@ -127,7 +127,7 @@ byte persona_nodetec[] = {
 float medicion();
 //Constructores
 OneWire ourWire(2);                //Se establece el pin 2  como el pin que utilizaremos para el protocolo OneWire
-DallasTemperature sensor(&ourWire); //Se declara una objeto para nuestro sensor
+DallasTemperature sensor(&ourWire);
 LiquidCrystal_I2C ALV_LCD(0x27, 16, 2);
 Servo Servo_ALV; 
 float temperatura;
@@ -135,15 +135,15 @@ float temperatura;
 
 void setup() {
   
-  Servo_ALV.attach(pin_Servo);
-  pinMode(RadarPin, INPUT);
+  Servo_ALV.attach(SERVO);
+  pinMode(RADAR, INPUT);
   rueda.begin();
-  pinMode(luminaria1, OUTPUT);
-  pinMode(luminaria2, OUTPUT);
+  pinMode(LUZ1, OUTPUT);
+  pinMode(LUZ2, OUTPUT);
   pinMode(buzzer, OUTPUT);
-  pinMode(btn1, INPUT);
-  pinMode(btn2, INPUT);
-  pinMode(btn3, INPUT);
+  pinMode(Boton_1, INPUT);
+  pinMode(Boton_2, INPUT);
+  pinMode(Boton_3, INPUT);
   Serial.begin(9600);
   pinMode(R, OUTPUT);
   pinMode(G, OUTPUT);
@@ -171,7 +171,7 @@ ALV_LCD.backlight();
  }
  
 void loop() {
-  value = digitalRead(RadarPin);
+  value = digitalRead(RADAR);
   luminarias();
   puerta();
   temperatura = medicion();
@@ -230,8 +230,8 @@ void proximidad(){
 }
 }
 void luminarias(){
-if(digitalRead(btn1) && estado1==0){  // si pulsador presionado y led apagado
-    digitalWrite(luminaria1, LOW);          // se enciende el led 
+if(digitalRead(Boton_1) && estado1==0){  // si pulsador presionado y led apagado
+    digitalWrite(LUZ1, LOW);          // se enciende el led 
     
     ALV_LCD.setCursor(9,0);
     ALV_LCD.print("Luz 1");
@@ -239,9 +239,9 @@ if(digitalRead(btn1) && estado1==0){  // si pulsador presionado y led apagado
     delay(300);
     estado1=1;                       // guardamos el estado encendido   
   } 
-  if(digitalRead(btn1) && estado1==1){  // si pulsador presionado y led encendido
+  if(digitalRead(Boton_1) && estado1==1){  // si pulsador presionado y led encendido
 
-    digitalWrite(luminaria1, HIGH);           // se apaga el led 
+    digitalWrite(LUZ1, HIGH);           // se apaga el led 
     
     ALV_LCD.setCursor(9,0);
     ALV_LCD.print("Luz 1");
@@ -249,8 +249,8 @@ if(digitalRead(btn1) && estado1==0){  // si pulsador presionado y led apagado
     delay(300); 
     estado1=0;                       // guardamos el estado apagado   
   }
-  if(digitalRead(btn2) && estado2==0){  // si pulsador presionado y led apagado
-    digitalWrite(luminaria2, LOW);          // se enciende el led 
+  if(digitalRead(Boton_2) && estado2==0){  // si pulsador presionado y led apagado
+    digitalWrite(LUZ2, LOW);          // se enciende el led 
     
     ALV_LCD.setCursor(9,1);
     ALV_LCD.print("Luz 2");
@@ -258,9 +258,9 @@ if(digitalRead(btn1) && estado1==0){  // si pulsador presionado y led apagado
     delay(300);
     estado2=1;                       // guardamos el estado encendido   
   } 
-  if(digitalRead(btn2) && estado2==1){  // si pulsador presionado y led encendido
+  if(digitalRead(Boton_2) && estado2==1){  // si pulsador presionado y led encendido
 
-    digitalWrite(luminaria2, HIGH);           // se apaga el led 
+    digitalWrite(LUZ2, HIGH);           // se apaga el led 
     
     ALV_LCD.setCursor(9,1);
     ALV_LCD.print("Luz 2");
@@ -270,7 +270,7 @@ if(digitalRead(btn1) && estado1==0){  // si pulsador presionado y led apagado
   }
 }
 void puerta(){
-  if(digitalRead(btn3)==HIGH){
+  if(digitalRead(Boton_3)==HIGH){
   Servo_ALV.write(90);
     ALV_LCD.setCursor(0,1);
     ALV_LCD.print("Puerta:");
