@@ -27,6 +27,7 @@
 #define R 9
 #define G 8
 #define B 7
+float Si = 494.883;
 int personacerca =0;
 int value;
 int estado1 = 0;
@@ -105,24 +106,24 @@ byte Centigrados[] = {
   B00011
 };
 byte persona_detectada[] = {
-  B01000,
-  B11100,
-  B00000,
   B01110,
   B01110,
+  B01110,
+  B10101,
   B01110,
   B00100,
-  B11111
+  B00100,
+  B01010
 };
 byte persona_nodetec[] = {
-  B10100,
-  B01000,
-  B10100,
   B01110,
   B01110,
   B01110,
   B00100,
-  B11111
+  B01110,
+  B10101,
+  B00100,
+  B01010  
 };
 float medicion();
 //Constructores
@@ -204,10 +205,10 @@ void proximidad(){
     ALV_LCD.setCursor(7,0);
     ALV_LCD.write(8);
      for(int i = 0; i < 7; i++){
-      rueda.setPixelColor(i,rueda.Color(0,255,0));
+      rueda.setPixelColor(i,rueda.Color(0,200,0));
           rueda.show();
           delay(50);
-          rueda.setPixelColor(i,rueda.Color(0,40,10));
+          rueda.setPixelColor(i,rueda.Color(0,50,20));
           rueda.show();
           delay(50);
       }
@@ -215,7 +216,8 @@ void proximidad(){
   if(value == HIGH){
     ALV_LCD.setCursor(7,0);
     ALV_LCD.write(7);
-    digitalWrite(buzzer, HIGH);
+     tone(buzzer, 494);
+     delay(500);
     for(int i = 0; i < 7; i++){
       rueda.setPixelColor(i,rueda.Color(255,0,0));
           rueda.show();
@@ -224,46 +226,42 @@ void proximidad(){
           rueda.show();
           delay(50); 
     }
-    digitalWrite(buzzer, LOW);
+   noTone(buzzer);
     }if(personacerca == 0){
      
 }
 }
 void luminarias(){
-if(digitalRead(Boton_1) && estado1==0){  // si pulsador presionado y led apagado
-    digitalWrite(LUZ1, HIGH);          // se enciende el led 
-    
-    ALV_LCD.setCursor(9,0);
-    ALV_LCD.print("Luz 1");
-    ALV_LCD.write(5);
-    delay(300);
-    estado1=1;                       // guardamos el estado encendido   
-  } 
-  if(digitalRead(Boton_1) && estado1==1){  // si pulsador presionado y led encendido
-
-    digitalWrite(LUZ1, LOW);           // se apaga el led 
-    
+if(digitalRead(Boton_1)==HIGH && estado1==0){  // si pulsador presionado y led apagado
+    digitalWrite(LUZ1, HIGH);          // se enciende el led    
     ALV_LCD.setCursor(9,0);
     ALV_LCD.print("Luz 1");
     ALV_LCD.write(4);
-    delay(300); 
+    delay(500);// guardamos el estado encendido
+    estado1=1;  
+  } 
+  if(digitalRead(Boton_1)==HIGH && estado1==1){  // si pulsador presionado y led encendido
+    digitalWrite(LUZ1, LOW);           // se apaga el led    
+    ALV_LCD.setCursor(9,0);
+    ALV_LCD.print("Luz 1");
+    ALV_LCD.write(5);
+    delay(500); 
     estado1=0;                       // guardamos el estado apagado   
   }
-  if(digitalRead(Boton_2) && estado2==0){  // si pulsador presionado y led apagado
-    digitalWrite(LUZ2, HIGH);          // se enciende el led 
-    
-    ALV_LCD.setCursor(9,1);
-    ALV_LCD.print("Luz 2");
-    ALV_LCD.write(5); 
-    delay(300);
-    estado2=1;                       // guardamos el estado encendido   
-  } 
-  if(digitalRead(Boton_2) && estado2==1){  // si pulsador presionado y led encendido
-    digitalWrite(LUZ2, LOW);           // se apaga el led  
+  if(digitalRead(Boton_2)==HIGH && estado2==0){  // si pulsador presionado y led apagado
+    digitalWrite(LUZ2, HIGH);          // se enciende el led     
     ALV_LCD.setCursor(9,1);
     ALV_LCD.print("Luz 2");
     ALV_LCD.write(4); 
-    delay(300);
+    delay(500);
+    estado2=1;                       // guardamos el estado encendido   
+  } 
+  if(digitalRead(Boton_2)==HIGH && estado2==1){  // si pulsador presionado y led encendido
+    digitalWrite(LUZ2, LOW);           // se apaga el led  
+    ALV_LCD.setCursor(9,1);
+    ALV_LCD.print("Luz 2");
+    ALV_LCD.write(5); 
+    delay(500);
     estado2=0;                       // guardamos el estado apagado   
   }
 }
@@ -301,19 +299,19 @@ void puerta(){
     }
 }
 void condicion_temp(){
-if(temperatura > 15 && temperatura <= 21){
+  if(temperatura > 25 && temperatura < 45){
   digitalWrite(R, HIGH);
   digitalWrite(G, LOW);
-  digitalWrite(B, HIGH);
+  digitalWrite(B, LOW);
 }
 if(temperatura > 21 && temperatura <= 25){
   digitalWrite(R, LOW);
   digitalWrite(G, HIGH);
   digitalWrite(B, LOW);
 }
-if(temperatura > 25 && temperatura < 45){
+if(temperatura > 15 && temperatura <= 21){
   digitalWrite(R, HIGH);
   digitalWrite(G, LOW);
-  digitalWrite(B, LOW);
+  digitalWrite(B, HIGH);
 }
 }
